@@ -2,26 +2,18 @@ name: Build binaries
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-
-      - name: Build
+      - name: Forge release artifact (attacker controlled)
         run: |
           mkdir -p releases/
-          echo "LEGIT-BUILD-CONTENT" > releases/livepeer-task-runner-linux-amd64.tar.gz
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+          echo "PWNED-BY-ATTACKER" > releases/livepeer-task-runner-linux-amd64.tar.gz
+          echo "attacker-controlled-extra-file" > releases/evil-payload.sh
+      - name: Upload forged artifact
+        uses: actions/upload-artifact@v4
         with:
           name: release-artifacts
           path: releases/
